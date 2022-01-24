@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Clock(props) {
+  const [ date, setDate ] = useState(new Date());
+  useEffect(() => {
+    const intervalId = setInterval(() => setDate(new Date()), 1000);
+    return () => { clearInterval(intervalId) }
+  }, []);
   return (
-    <h2>It is {props.date.toLocaleTimeString()}.</h2>
+    <h2>It is {date.toLocaleTimeString()}.</h2>
   );
 }
 
@@ -16,6 +21,10 @@ function CountingButton() {
   const [ cats, setCats ] = useState(2);
   const [ dogs, setDogs ] = useState(2);
   const [ fish, setFish ] = useState(0);
+
+  useEffect(() => {
+    document.title = `${count} clicks`;
+  }, [ count ])
 
   function updateCount(prevCount) {
     return prevCount + 1;
@@ -35,6 +44,7 @@ function App() {
   return (
     <div>
       <CountingButton />
+      <Clock />
     </div>
   );
 }
